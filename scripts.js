@@ -1,0 +1,97 @@
+const expenses = [
+    { date: '2025-07-01', item: 'Delta Net WiFi', category: 'Subscriptions', amount: 2000.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: 'Carrefour Shopping', category: 'Groceries', amount: 2901.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: 'Fuel', category: 'Transportation', amount: 7842.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: 'Safaricom Data Bundle', category: 'Communication', amount: 30.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: '4 Eggs', category: 'Groceries', amount: 90.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: 'Electricity Token', category: 'Electricity', amount: 100.00, electricityUnits: 3.5, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: 'Electricity Token', category: 'Electricity', amount: 100.00, electricityUnits: 3.5, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-01', item: 'Sent to Mom', category: 'Support / Family', amount: 2000.00, electricityUnits: null, waterUnits: null, paymentMethod: 'Equity Bank' },
+    { date: '2025-07-01', item: 'Sent to Dad', category: 'Support / Family', amount: 3000.00, electricityUnits: null, waterUnits: null, paymentMethod: 'Equity Bank' },
+    { date: '2025-07-02', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 6.9, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-02', item: 'ChatGPT Subscription', category: 'Subscriptions', amount: 3184.66, electricityUnits: null, waterUnits: null, paymentMethod: 'Equity Card' },
+    { date: '2025-07-02', item: 'Safaricom Data Bundle', category: 'Communication', amount: 20.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-02', item: 'Safaricom Data Bundle', category: 'Communication', amount: 20.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-02', item: 'Silvercrest 8L Airfryer', category: 'Household', amount: 5500.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-02', item: 'Electric Egg Boiler', category: 'Household', amount: 850.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-02', item: 'Delivery', category: 'Delivery', amount: 800.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-02', item: 'Naivas Shopping', category: 'Groceries', amount: 514.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-03', item: 'Rent', category: 'Rent', amount: 22000.00, electricityUnits: null, waterUnits: null, paymentMethod: 'I&M Bank' },
+    { date: '2025-07-03', item: 'Water', category: 'Water', amount: 1050.00, electricityUnits: null, waterUnits: 7.0, paymentMethod: 'I&M Bank' },
+    { date: '2025-07-03', item: 'Garbage', category: 'Garbage', amount: 200.00, electricityUnits: null, waterUnits: null, paymentMethod: 'I&M Bank' },
+    { date: '2025-07-03', item: 'Watchman', category: 'Watchman', amount: 250.00, electricityUnits: null, waterUnits: null, paymentMethod: 'I&M Bank' },
+    { date: '2025-07-03', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-03', item: 'Sent to Ian', category: 'Support / Family', amount: 200.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-03', item: '6 Bananas', category: 'Groceries', amount: 60.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-03', item: '4 Chapatis', category: 'Food & Eating Out', amount: 200.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-03', item: '2 Cups Porridge (shared)', category: 'Food & Eating Out', amount: 150.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-04', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-05', item: 'Safaricom Data Bundle', category: 'Communication', amount: 91.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-05', item: 'Safaricom Data Bundle', category: 'Communication', amount: 30.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-05', item: 'Safaricom Data Bundle', category: 'Communication', amount: 20.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-05', item: 'Public WiFi (1hr)', category: 'Communication', amount: 10.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-05', item: 'Public WiFi (1hr)', category: 'Communication', amount: 10.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-05', item: 'Half Pizza Bill (shared)', category: 'Food & Eating Out', amount: 1160.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-06', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-07', item: 'Safaricom Data Bundle', category: 'Communication', amount: 20.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-08', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },        
+    { date: '2025-07-08', item: 'Safaricom Data Bundle', category: 'Communication', amount: 22.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },        
+    { date: '2025-07-08', item: '1kg Beef Meat', category: 'Groceries', amount: 700, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },        
+    { date: '2025-07-08', item: 'Chapati + Beans', category: 'Food & Eating Out', amount: 450.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },        
+    { date: '2025-07-08', item: 'Naivas Shopping', category: 'Groceries', amount: 270.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },        
+    { date: '2025-07-09', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 6.9, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-09', item: '12V Car Battery', category: 'Transportation', amount: 14600.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-09', item: 'Safaricom Data Bundle', category: 'Communication', amount: 50.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-10', item: '1 Mandazi', category: 'Food & Eating Out', amount: 10.00, electricityUnits: null, waterUnits: null, paymentMethod: 'Equity Bank' },
+    { date: '2025-07-10', item: 'Carwash', category: 'Transportation', amount: 600.00, electricityUnits: null, waterUnits: null, paymentMethod: 'Equity Bank' },
+    { date: '2025-07-10', item: 'Shared Shopping (Vivian)', category: 'Groceries', amount: 220.00, electricityUnits: null, waterUnits: null, paymentMethod: 'Equity Bank' },
+    { date: '2025-07-10', item: 'Shared Shopping (Vivian)', category: 'Groceries', amount: 424.00, electricityUnits: null, waterUnits: null, paymentMethod: 'I&M Bank' },
+    { date: '2025-07-11', item: 'Safaricom Data Bundle', category: 'Communication', amount: 28.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-11', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-12', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-13', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-15', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-15', item: 'Sent to Vivian', category: 'Support / Family', amount: 500.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-15', item: '4 Chapatis', category: 'Food & Eating Out', amount: 250.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-16', item: 'Safaricom Data Bundle', category: 'Communication', amount: 50.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-16', item: 'Hospital Consultation', category: 'Health', amount: 1000.00, electricityUnits: null, waterUnits: null, paymentMethod: 'I&M Bank' },
+    { date: '2025-07-16', item: 'Hospital Urinalysis Test', category: 'Health', amount: 500.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-16', item: 'Hospital Medicine', category: 'Health', amount: 1210.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-16', item: 'Safaricom Data Bundle', category: 'Communication', amount: 20.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
+    { date: '2025-07-17', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' }
+];
+
+const tableBody = document.querySelector("#expenses-table tbody");
+const totalDisplay = document.getElementById("total");
+const categorySelect = document.getElementById("category");
+
+function populateCategories() {
+    const categories = [...new Set(expenses.map(e => e.category))];
+    categories.forEach(cat => {
+    const option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    categorySelect.appendChild(option);
+    });
+}
+
+function renderTable(filter = "All") {
+    tableBody.innerHTML = "";
+    let total = 0;
+    expenses
+    .filter(e => filter === "All" || e.category === filter)
+    .forEach(e => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${e.date}</td><td>${e.item}</td><td>${e.category}</td><td>${e.amount}</td><td>${e.electricityUnits ?? ''}</td><td>${e.waterUnits ?? ''}</td><td>${e.paymentMethod}</td>`;
+        tableBody.appendChild(row);
+        total += e.amount;
+    });
+    totalDisplay.textContent = total.toLocaleString();
+}
+
+categorySelect.addEventListener("change", () => {
+    renderTable(categorySelect.value);
+});
+
+populateCategories();
+renderTable();

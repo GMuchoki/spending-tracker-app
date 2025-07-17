@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Tracker - July 2025</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./scripts.js"></script>
+</head>
+<body>
+  <h1>Financial Tracker - July 2025</h1>
+
+  <div class="filter">
+    <label for="category">Filter by Category:</label>
+    <select id="category">
+      <option value="All">All</option>
+    </select>
+  </div>
+
+  <table id="expenses-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Item</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Electricity Units</th>
+        <th>Water Units</th>
+        <th>Payment Method</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="summary">Total Spending: KES <span id="total">0</span></div>
+</body>
+</html>
