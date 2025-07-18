@@ -155,7 +155,7 @@ function addExpense() {
     document.getElementById("new-payment").value = '';
 }
 
-function addBudget() {
+/* function addBudget() {
     const cat = document.getElementById("budget-category").value;
     const amount = parseFloat(document.getElementById("budget-amount").value);
     if (!cat || isNaN(amount)) return alert("Fill in category and amount.");
@@ -182,6 +182,66 @@ function renderBudgetSummary(data) {
     html += "</ul>";
     summaryEl.innerHTML = html;
 }
+ */
+
+function addBudget() {
+  const cat = document.getElementById("budget-category").value.trim();
+  const amount = parseFloat(document.getElementById("budget-amount").value);
+
+  if (!cat || isNaN(amount)) {
+    alert("Please fill in both category and budget amount.");
+    return;
+  }
+
+  budgets[cat] = amount;
+  localStorage.setItem("budgets", JSON.stringify(budgets));
+  renderBudgetSummary(expenses);
+
+  document.getElementById("budget-category").value = '';
+  document.getElementById("budget-amount").value = '';
+}
+
+function renderBudgetSummary(data) {
+  const budgetList = document.getElementById("budget-list");
+  budgetList.innerHTML = "";
+
+  const spent = {};
+  data.forEach(e => {
+    spent[e.category] = (spent[e.category] || 0) + e.amount;
+  });
+
+  for (const [cat, limit] of Object.entries(budgets)) {
+    const used = spent[cat] || 0;
+    const percent = ((used / limit) * 100).toFixed(1);
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${cat}</strong>: KES ${used.toLocaleString()} / ${limit.toLocaleString()} (${percent}%)
+      <button onclick="editBudget('${cat}')">✏️ Edit</button>
+      <button onclick="deleteBudget('${cat}')">🗑️ Delete</button>
+    `;
+    budgetList.appendChild(li);
+  }
+}
+
+function editBudget(category) {
+  document.getElementById("budget-category").value = category;
+  document.getElementById("budget-amount").value = budgets[category];
+}
+
+function deleteBudget(category) {
+  if (confirm(`Delete budget for "${category}"?`)) {
+    delete budgets[category];
+    localStorage.setItem("budgets", JSON.stringify(budgets));
+    renderBudgetSummary(expenses);
+  }
+}
+
+
+
+
+
+
 
 function applyDateFilter() {
     const start = document.getElementById("start-date").value;

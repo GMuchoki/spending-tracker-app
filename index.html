@@ -82,13 +82,16 @@
     <div class="summary">Total Spending: KES <span id="total">0</span></div>
 
     <div class="add-form">
-      <h3>Set Category Budget</h3>
-      <input type="text" id="budget-category" placeholder="Category" />
-      <input type="number" id="budget-amount" placeholder="Budget (KES)" />
-      <button onclick="addBudget()">Add Budget</button>
+        <h3>Set Category Budget</h3>
+        <input type="text" id="budget-category" placeholder="Category" />
+        <input type="number" id="budget-amount" placeholder="Budget (KES)" />
+        <button onclick="addBudget()">Add / Update Budget</button>
     </div>
 
-    <div id="budget-summary" class="summary"></div>
+    <div id="budget-summary" class="summary">
+        <h3>Budget Summary</h3>
+        <ul id="budget-list"></ul>
+    </div>
 
     <!-- CHARTS -->
     <div class="charts">

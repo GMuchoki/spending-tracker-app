@@ -185,3 +185,19 @@ tr:hover {
 #auth-screen button:hover {
   background-color: #b9297d;
 }
+
+
+
+#budget-list button {
+  margin-left: 8px;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+#budget-list button:hover {
+  background-color: #bbb;
+}
