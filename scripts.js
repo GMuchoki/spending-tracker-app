@@ -186,7 +186,7 @@ window.onload = () => {
     showApp();
   }
 
-//  expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+  //expenses = JSON.parse(localStorage.getItem("expenses")) || [];
   budgets = JSON.parse(localStorage.getItem("budgets")) || {};
 
   loadExpenses(); // this will fetch and call initializeApp() when ready
@@ -213,6 +213,12 @@ function initializeApp() {
   if (document.getElementById("categoryChart")) renderCategoryChart(expenses);
   if (document.getElementById("dailyChart")) renderDailyChart(expenses);
   if (document.getElementById("utilitiesChart")) renderUtilitiesChart(expenses);
+
+  // ✅ Add this block to support total on dashboard
+  if (document.getElementById("dashboard-total")) {
+    const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+    document.getElementById("dashboard-total").textContent = total.toLocaleString();
+  }
 }
 
 
