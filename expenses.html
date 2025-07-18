@@ -1,0 +1,68 @@
+<!-- expenses.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expenses - Financial Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="auth-screen">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="app" style="display: none;">
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="expenses.html">Expenses</a>
+      <a href="budgets.html">Budgets</a>
+      <a href="utilities.html">Utilities</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+
+    <h1>Expenses</h1>
+
+    <div class="add-form">
+      <h3>Add New Expense</h3>
+      <input type="date" id="new-date" />
+      <input type="text" id="new-item" placeholder="Item" />
+      <input type="text" id="new-category" placeholder="Category" />
+      <input type="number" id="new-amount" placeholder="Amount (KES)" />
+      <input type="number" id="new-electricity" placeholder="Electricity Units" />
+      <input type="number" id="new-water" placeholder="Water Units" />
+      <input type="text" id="new-payment" placeholder="Payment Method" />
+      <button onclick="addExpense()">Add</button>
+    </div>
+
+    <div class="filter">
+      <label for="category">Filter by Category:</label>
+      <select id="category"><option value="All">All</option></select>
+    </div>
+
+    <table id="expenses-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Item</th>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Electricity Units</th>
+          <th>Water Units</th>
+          <th>Payment Method</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- ✅ Add this below the table -->
+    <div class="summary">Total Spending: KES <span id="total">0</span></div>
+
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
