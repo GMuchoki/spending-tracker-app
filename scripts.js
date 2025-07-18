@@ -61,37 +61,226 @@ const expenses = [
     { date: '2025-07-17', item: 'Electricity Token', category: 'Electricity', amount: 200.00, electricityUnits: 7.0, waterUnits: null, paymentMethod: 'M-PESA' }
 ];
 
+let budgets = {};
 const tableBody = document.querySelector("#expenses-table tbody");
 const totalDisplay = document.getElementById("total");
 const categorySelect = document.getElementById("category");
+const monthSelect = document.getElementById("month-select");
+const categoryCtx = document.getElementById("categoryChart").getContext("2d");
+const dailyCtx = document.getElementById("dailyChart").getContext("2d");
+const utilitiesCtx = document.getElementById("utilitiesChart").getContext("2d");
+let categoryChart, dailyChart, utilitiesChart;
 
 function populateCategories() {
     const categories = [...new Set(expenses.map(e => e.category))];
+    categorySelect.innerHTML = '<option value="All">All</option>';
     categories.forEach(cat => {
     const option = document.createElement("option");
     option.value = cat;
     option.textContent = cat;
     categorySelect.appendChild(option);
     });
+
+    const months = [...new Set(expenses.map(e => e.date.slice(0, 7)))];
+    monthSelect.innerHTML = '<option value="All">All</option>';
+    months.forEach(month => {
+    const option = document.createElement("option");
+    option.value = month;
+    option.textContent = month;
+    monthSelect.appendChild(option);
+    });
 }
 
-function renderTable(filter = "All") {
+function renderTable(filter = "All", customData = null) {
     tableBody.innerHTML = "";
     let total = 0;
-    expenses
-    .filter(e => filter === "All" || e.category === filter)
-    .forEach(e => {
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${e.date}</td><td>${e.item}</td><td>${e.category}</td><td>${e.amount}</td><td>${e.electricityUnits ?? ''}</td><td>${e.waterUnits ?? ''}</td><td>${e.paymentMethod}</td>`;
-        tableBody.appendChild(row);
-        total += e.amount;
+    const data = customData ?? expenses;
+    const filtered = data.filter(e => filter === "All" || e.category === filter);
+    filtered.forEach(e => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${e.date}</td><td>${e.item}</td><td>${e.category}</td><td>${e.amount}</td><td>${e.electricityUnits ?? ''}</td><td>${e.waterUnits ?? ''}</td><td>${e.paymentMethod}</td>`;
+    tableBody.appendChild(row);
+    total += e.amount;
     });
     totalDisplay.textContent = total.toLocaleString();
+    renderCategoryChart(filtered);
+    renderDailyChart(filtered);
+    renderUtilitiesChart(filtered);
+    renderBudgetSummary(filtered);
+}
+
+function addExpense() {
+    const date = document.getElementById("new-date").value;
+    const item = document.getElementById("new-item").value;
+    const category = document.getElementById("new-category").value;
+    const amount = parseFloat(document.getElementById("new-amount").value);
+    const electricityUnits = parseFloat(document.getElementById("new-electricity").value) || null;
+    const waterUnits = parseFloat(document.getElementById("new-water").value) || null;
+    const paymentMethod = document.getElementById("new-payment").value;
+
+    if (!date || !item || !category || isNaN(amount)) {
+    alert("Please fill in date, item, category, and amount.");
+    return;
+    }
+
+    expenses.push({ date, item, category, amount, electricityUnits, waterUnits, paymentMethod });
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    populateCategories();
+    renderTable(categorySelect.value);
+
+    document.getElementById("new-date").value = '';
+    document.getElementById("new-item").value = '';
+    document.getElementById("new-category").value = '';
+    document.getElementById("new-amount").value = '';
+    document.getElementById("new-electricity").value = '';
+    document.getElementById("new-water").value = '';
+    document.getElementById("new-payment").value = '';
+}
+
+function addBudget() {
+    const cat = document.getElementById("budget-category").value;
+    const amount = parseFloat(document.getElementById("budget-amount").value);
+    if (!cat || isNaN(amount)) return alert("Fill in category and amount.");
+    budgets[cat] = amount;
+    localStorage.setItem("budgets", JSON.stringify(budgets));
+    renderBudgetSummary(expenses);
+    document.getElementById("budget-category").value = '';
+    document.getElementById("budget-amount").value = '';
+}
+
+function renderBudgetSummary(data) {
+    const summaryEl = document.getElementById("budget-summary");
+    if (!Object.keys(budgets).length) return summaryEl.textContent = '';
+    let html = "<h3>Budget Summary</h3><ul>";
+    const spent = {};
+    data.forEach(e => {
+    spent[e.category] = (spent[e.category] || 0) + e.amount;
+    });
+    for (const [cat, limit] of Object.entries(budgets)) {
+    const used = spent[cat] || 0;
+    const percent = ((used / limit) * 100).toFixed(1);
+    html += `<li>${cat}: KES ${used.toLocaleString()} / ${limit.toLocaleString()} (${percent}%)</li>`;
+    }
+    html += "</ul>";
+    summaryEl.innerHTML = html;
+}
+
+function applyDateFilter() {
+    const start = document.getElementById("start-date").value;
+    const end = document.getElementById("end-date").value;
+    if (!start || !end) return alert("Select both start and end dates.");
+    const filtered = expenses.filter(e => e.date >= start && e.date <= end);
+    renderTable("All", filtered);
+}
+
+function applyMonthFilter() {
+    const month = monthSelect.value;
+    if (month === "All") {
+    renderTable(categorySelect.value);
+    } else {
+    const filtered = expenses.filter(e => e.date.startsWith(month));
+    renderTable("All", filtered);
+    }
+}
+
+function exportToCSV() {
+    let csv = "Date,Item,Category,Amount,Electricity Units,Water Units,Payment Method\n";
+    expenses.forEach(e => {
+    csv += `${e.date},${e.item},${e.category},${e.amount},${e.electricityUnits ?? ''},${e.waterUnits ?? ''},${e.paymentMethod}\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "expenses_july_2025.csv";
+    link.click();
+}
+
+function renderCategoryChart(data) {
+    const categoryTotals = {};
+    data.forEach(e => {
+    if (!categoryTotals[e.category]) categoryTotals[e.category] = 0;
+    categoryTotals[e.category] += e.amount;
+    });
+    const labels = Object.keys(categoryTotals);
+    const values = Object.values(categoryTotals);
+    if (categoryChart) categoryChart.destroy();
+    categoryChart = new Chart(categoryCtx, {
+    type: 'pie',
+    data: {
+        labels,
+        datasets: [{
+        label: 'Spending by Category',
+        data: values,
+        backgroundColor: labels.map(() => `hsl(${Math.random() * 360}, 70%, 70%)`)
+        }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+}
+
+function renderDailyChart(data) {
+    const dailyTotals = {};
+    data.forEach(e => {
+    if (!dailyTotals[e.date]) dailyTotals[e.date] = 0;
+    dailyTotals[e.date] += e.amount;
+    });
+    const labels = Object.keys(dailyTotals).sort();
+    const values = labels.map(date => dailyTotals[date]);
+    if (dailyChart) dailyChart.destroy();
+    dailyChart = new Chart(dailyCtx, {
+    type: 'bar',
+    data: {
+        labels,
+        datasets: [{
+        label: 'Daily Spending (KES)',
+        data: values,
+        backgroundColor: '#42a5f5'
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+    }
+    });
+}
+
+function renderUtilitiesChart(data) {
+    let totalElectricity = 0, totalWater = 0;
+    data.forEach(e => {
+    totalElectricity += e.electricityUnits ? e.electricityUnits : 0;
+    totalWater += e.waterUnits ? e.waterUnits : 0;
+    });
+    const electricityCost = totalElectricity * 28.57;
+    const waterCost = totalWater * 150;
+    if (utilitiesChart) utilitiesChart.destroy();
+    utilitiesChart = new Chart(utilitiesCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Electricity (KES)', 'Water (KES)'],
+        datasets: [{
+        label: 'Utility Costs',
+        data: [electricityCost, waterCost],
+        backgroundColor: ['#ff9800', '#4caf50']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+    }
+    });
 }
 
 categorySelect.addEventListener("change", () => {
     renderTable(categorySelect.value);
 });
 
-populateCategories();
-renderTable();
+window.onload = () => {
+    const savedExpenses = JSON.parse(localStorage.getItem("expenses"));
+    const savedBudgets = JSON.parse(localStorage.getItem("budgets"));
+    if (savedExpenses) expenses.push(...savedExpenses);
+    if (savedBudgets) budgets = savedBudgets;
+    populateCategories();
+    renderTable();
+};
