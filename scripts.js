@@ -1,3 +1,21 @@
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  // You can change this to anything you like
+  const correctUsername = "me";
+  const correctPassword = "supersecret";
+
+  if (username === correctUsername && password === correctPassword) {
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    alert("Incorrect username or password.");
+  }
+}
+
+
+
 const expenses = [
     { date: '2025-07-01', item: 'Delta Net WiFi', category: 'Subscriptions', amount: 2000.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
     { date: '2025-07-01', item: 'Carrefour Shopping', category: 'Groceries', amount: 2901.00, electricityUnits: null, waterUnits: null, paymentMethod: 'M-PESA' },
